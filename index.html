@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>میورا V4 — کارگاه شمع‌سازی شیشه مایع و انیمیشن موشن</title>
+    <meta name="description" content="MIORA V4 — کارگاه عطرسازی و شمع‌سازی دست‌ساز میورا با شیشه مایع، موم گیاهی سویا و پشتیبانی دو زبانه فارسی و انگلیسی.">
+    
+    <!-- Google Fonts: Editorial + Vazirmatn Persian Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <!-- Motion JS Engine -->
+    <script src="https://cdn.jsdelivr.net/npm/motion@10.18.0/dist/motion.js"></script>
+    
+    <!-- Custom V4 Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-dark">
+
+    <!-- Interactive Cursor Glow Orb -->
+    <div class="cursor-glow-orb" id="cursor-orb"></div>
+
+    <!-- Background Ambient Mesh Canvas -->
+    <canvas id="ambient-canvas"></canvas>
+    <div class="glass-orb orb-1"></div>
+    <div class="glass-orb orb-2"></div>
+    <div class="glass-orb orb-3"></div>
+
+    <!-- Navigation Header -->
+    <header class="glass-header" id="navbar">
+        <div class="header-container">
+            <a href="#" class="brand-logo">
+                <span class="flame-icon">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C12 2 7 8 7 13C7 16.866 10.134 20 14 20C17.866 20 21 16.866 21 13C21 7 16 4 16 4C16 4 15 7 13 8C11 9 12 2 12 2Z" fill="url(#flameGradV4)" />
+                        <path d="M11 11C11 11 8.5 13.5 8.5 16C8.5 17.933 10.067 19.5 12 19.5C13.933 19.5 15.5 17.933 15.5 16C15.5 13.5 13.5 12.5 13.5 12.5C13.5 12.5 13 14 12 14.5C11 15 11 11 11 11Z" fill="#FFF7ED" />
+                        <defs>
+                            <linearGradient id="flameGradV4" x1="7" y1="2" x2="21" y2="20" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#F59E0B"/>
+                                <stop offset="0.5" stop-color="#EF4444"/>
+                                <stop offset="1" stop-color="#8B5CF6"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </span>
+                <div class="brand-text">
+                    <span class="brand-name">M I O R A</span>
+                    <span class="brand-tag" id="i18n-tag">کارگاه شمع‌سازی موشن</span>
+                </div>
+            </a>
+
+            <nav class="nav-links">
+                <a href="#hero" class="nav-link active" id="nav-home">خانه</a>
+                <a href="#collections" class="nav-link" id="nav-collections">کلکسیون‌ها</a>
+                <a href="#bespoke-blender" class="nav-link" id="nav-lab">آزمایشگاه موشن</a>
+                <a href="#craftsmanship" class="nav-link" id="nav-ethos">اصالت ساخت</a>
+                <a href="#reviews" class="nav-link" id="nav-reviews">نظرات</a>
+            </nav>
+
+            <div class="header-actions">
+                <!-- Language Switcher Pill -->
+                <button class="lang-switch-btn" id="lang-toggle" title="تغییر زبان / Switch Language">
+                    <span class="lang-flag">🌐</span>
+                    <span id="current-lang-text">EN / English</span>
+                </button>
+
+                <button class="icon-btn" id="audio-toggle" title="پخش صدای شومینه">
+                    <i data-feather="volume-x" id="audio-icon"></i>
+                    <span class="sound-wave">
+                        <span></span><span></span><span></span>
+                    </span>
+                </button>
+
+                <button class="icon-btn" id="theme-toggle" title="تغییر تم">
+                    <i data-feather="moon" id="theme-icon"></i>
+                </button>
+
+                <button class="cart-btn" id="cart-drawer-toggle">
+                    <i data-feather="shopping-bag"></i>
+                    <span class="cart-label" id="cart-btn-label">سبد خرید</span>
+                    <span class="cart-count" id="cart-count">0</span>
+                </button>
+
+                <!-- Mobile Hamburger Button -->
+                <button class="icon-btn mobile-menu-btn" id="mobile-menu-toggle" aria-label="منوی موبایل">
+                    <i data-feather="menu" id="mobile-menu-icon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Drawer Overlay -->
+    <div class="mobile-nav-overlay" id="mobile-nav">
+        <div class="mobile-nav-content glass-card">
+            <button class="icon-btn mobile-nav-close" id="mobile-nav-close"><i data-feather="x"></i></button>
+            <div class="mobile-brand">
+                <span class="brand-name">M I O R A</span>
+                <span class="brand-tag">نسخه ۴ موشن دو زبانه</span>
+            </div>
+            <nav class="mobile-nav-links">
+                <a href="#hero" class="mobile-nav-link active" id="mob-home"><i data-feather="home"></i> خانه</a>
+                <a href="#collections" class="mobile-nav-link" id="mob-collections"><i data-feather="grid"></i> کلکسیون‌ها</a>
+                <a href="#bespoke-blender" class="mobile-nav-link" id="mob-lab"><i data-feather="sliders"></i> آزمایشگاه موشن</a>
+                <a href="#craftsmanship" class="mobile-nav-link" id="mob-ethos"><i data-feather="award"></i> اصالت ساخت</a>
+                <a href="#reviews" class="mobile-nav-link" id="mob-reviews"><i data-feather="star"></i> نظرات</a>
+            </nav>
+            <div class="mobile-nav-footer">
+                <p id="mob-footer-desc">شمع‌های طبیعی موم سویا در ظروف شیشه‌ای کریستال مایع</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- V2 Motion Hero Section (Preserved from V2) -->
+        <section id="hero" class="hero-section">
+            <div class="hero-container">
+                <div class="hero-content motion-reveal">
+                    <div class="glass-badge motion-pulse">
+                        <span class="badge-dot"></span>
+                        <span id="badge-text">نسخه ۴ — انیمیشن‌های موشن و فیزیک شیشه مایع</span>
+                    </div>
+                    
+                    <h1 class="hero-title" id="hero-heading">
+                        شکل‌گرفته در <span class="gradient-text">شیشه مایع.</span><br>
+                        ریخته‌شده در <span class="flame-text">شعله آتش.</span>
+                    </h1>
+                    
+                    <p class="hero-description" id="hero-sub">
+                        میورا V4 ترکیبی از انیمیشن‌های موشن، ظروف شیشه‌ای کریستالی دست‌ساز و شمع‌های معطر موم طبیعی سویا با پشتیبانی از ریال و تومان.
+                    </p>
+
+                    <div class="hero-cta-group">
+                        <a href="#collections" class="btn btn-primary motion-btn" id="hero-cta-explore">
+                            <span>مشاهده کلکسیون‌ها</span>
+                            <i data-feather="arrow-right"></i>
+                        </a>
+                        <a href="#bespoke-blender" class="btn btn-glass motion-btn" id="hero-cta-lab">
+                            <i data-feather="sliders"></i>
+                            <span>آزمایشگاه رایحه</span>
+                        </a>
+                    </div>
+
+                    <div class="hero-stats motion-reveal-delay">
+                        <div class="stat-item">
+                            <span class="stat-value" id="stat-1-val">۶۰ فریم</span>
+                            <span class="stat-label" id="stat-1-label">انیمیشن‌های موشن</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="stat-2-val">۱۰۰٪ سویا</span>
+                            <span class="stat-label" id="stat-2-label">موم ارگانیک</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-value" id="stat-3-val">کریستالی</span>
+                            <span class="stat-label" id="stat-3-label">ظروف قابل شارژ</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- V2 Interactive Flame Display (Preserved) -->
+                <div class="hero-visual">
+                    <div class="hero-glass-card tilt-card" id="hero-card">
+                        <div class="card-glass-shine"></div>
+                        <div class="featured-candle-display">
+                            <div class="candle-flame-wrapper" id="flame-interactive-zone" title="برای خاموش/روشن کردن کلیک کنید!">
+                                <div class="flame-glow-halo" id="flame-halo"></div>
+                                <div class="flame-core" id="flame-flame"></div>
+                                <div class="smoke-particle-box" id="smoke-box"></div>
+                            </div>
+                            <img src="assets/images/miora_amber_unlit.jpg" alt="میورا لونا رز" class="featured-candle-img">
+                        </div>
+                        <div class="card-caption">
+                            <div class="card-caption-header">
+                                <h3 id="hero-candle-title">میورا لونا رز — عنبر و عود</h3>
+                                <span class="price-tag" id="hero-candle-price">۲,۸۰۰,۰۰۰ تومان</span>
+                            </div>
+                            <p id="hero-candle-desc">چوب عود دودی، عنبر طلایی و گل رز دمشقی (برای خاموش/روشن کردن کلیک کنید)</p>
+                            <button class="btn btn-sm btn-glass add-to-cart-quick" data-id="1" id="hero-add-btn">
+                                <i data-feather="plus"></i> <span>افزودن به سبد</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mood Selector Bar -->
+        <section class="mood-bar-section">
+            <div class="mood-bar-container glass-card motion-reveal">
+                <span class="mood-title" id="mood-bar-title"><i data-feather="compass"></i> فضای دلخواه شما:</span>
+                <div class="mood-pills">
+                    <button class="mood-pill active" data-mood="all" id="mood-all">همه فضاها</button>
+                    <button class="mood-pill" data-mood="calm" id="mood-calm">آرامش و سکون</button>
+                    <button class="mood-pill" data-mood="energy" id="mood-energy">گرما و انرژی</button>
+                    <button class="mood-pill" data-mood="focus" id="mood-focus">تمرکز و عود</button>
+                    <button class="mood-pill" data-mood="night" id="mood-night">شب‌های عاشقانه</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Collections Section -->
+        <section id="collections" class="collections-section">
+            <div class="section-header motion-reveal">
+                <span class="section-tag" id="col-tag">دست‌پخت‌های فاخر</span>
+                <h2 class="section-title" id="col-title">مجموعه شمع‌های میورا</h2>
+                <p class="section-subtitle" id="col-sub">انیمیشن‌های استگر موشن، شمع‌های طبیعی در ظروف شیشه‌ای کریستال مایع را نمایان می‌سازند.</p>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="collection-tabs motion-reveal">
+                <button class="tab-btn active" data-category="all" id="cat-all">همه ظروف</button>
+                <button class="tab-btn" data-category="amber" id="cat-amber">عنبر آسمانی</button>
+                <button class="tab-btn" data-category="botanical" id="cat-botanical">پناهگاه گیاهی</button>
+                <button class="tab-btn" data-category="midnight" id="cat-midnight">مخمل نیمه‌شب</button>
+                <button class="tab-btn" data-category="moonlight" id="cat-moonlight">مروارید مهتاب</button>
+            </div>
+
+            <!-- Motion Product Grid -->
+            <div class="product-grid" id="product-grid"></div>
+        </section>
+
+        <!-- Motion Scent Studio Section -->
+        <section id="bespoke-blender" class="bespoke-section">
+            <div class="bespoke-container glass-card motion-reveal">
+                <div class="bespoke-header">
+                    <span class="section-tag" id="lab-tag">کارگاه تعاملی</span>
+                    <h2 class="section-title" id="lab-title">آزمایشگاه موشن میورا</h2>
+                    <p id="lab-sub">جنس ظرف شیشه‌ای و نت‌های رایحه اختصاصی خود را با انیمیشن مایع ترکیب کنید.</p>
+                </div>
+
+                <div class="bespoke-grid">
+                    <!-- Controls -->
+                    <div class="blender-controls">
+                        <div class="control-group">
+                            <label class="control-label" id="lbl-vessel">۱. انتخاب جنس و رنگ ظرف شیشه‌ای</label>
+                            <div class="vessel-options">
+                                <button class="vessel-opt active" data-vessel="Amber Crystal" data-color="#F59E0B" data-img="assets/images/miora_amber.jpg">
+                                    <span class="vessel-swatch amber-swatch"></span>
+                                    <span id="v-amber">کریستال کهربایی</span>
+                                </button>
+                                <button class="vessel-opt" data-vessel="Emerald Forest" data-color="#10B981" data-img="assets/images/botanical_fig.jpg">
+                                    <span class="vessel-swatch emerald-swatch"></span>
+                                    <span id="v-emerald">زمردی جنگلی</span>
+                                </button>
+                                <button class="vessel-opt" data-vessel="Midnight Violet" data-color="#8B5CF6" data-img="assets/images/midnight_oud.jpg">
+                                    <span class="vessel-swatch violet-swatch"></span>
+                                    <span id="v-violet">بنفش نیمه‌شب</span>
+                                </button>
+                                <button class="vessel-opt" data-vessel="Moonlight Pearl" data-color="#E2E8F0" data-img="assets/images/moonlight_jasmine.jpg">
+                                    <span class="vessel-swatch pearl-swatch"></span>
+                                    <span id="v-pearl">مروارید مهتابی</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" id="lbl-top">۲. انتخاب نت آغازی</label>
+                            <select id="top-note-select" class="glass-select">
+                                <option value="bergamot">ترنج کالابریا و پوست مرکبات</option>
+                                <option value="fig">برگ‌های انجیر وحشی</option>
+                                <option value="pepper">فلفل صورتی و هل کوبیده</option>
+                                <option value="jasmine">یاس سفید و چای صبحگاهی</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" id="lbl-heart">۳. انتخاب نت میانی</label>
+                            <select id="heart-note-select" class="glass-select">
+                                <option value="rose" selected>رز دمشقی دودی</option>
+                                <option value="eucalyptus">اکالیپتوس و کاج آلپ</option>
+                                <option value="vanilla">انیسون ستاره‌ای و وانیل</option>
+                                <option value="honey">شهد عسل طلایی و عنبر</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" id="lbl-base">۴. انتخاب نت پایانی</label>
+                            <select id="base-note-select" class="glass-select">
+                                <option value="oud" selected>چوب عود دودی و صندل</option>
+                                <option value="cedar">چوب سدر نمدار و خزه بلوط</option>
+                                <option value="tonka">دانه تونکا خالص و مشک گرم</option>
+                                <option value="suede">جیر سفید و کشمیر مخملی</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" id="lbl-name">۵. نامگذاری شمع اختصاصی</label>
+                            <input type="text" id="custom-candle-name" class="glass-input" value="شمع اختصاصی میورا شماره ۱" maxlength="32">
+                        </div>
+                    </div>
+
+                    <!-- Live Fluid Morph Card -->
+                    <div class="blender-preview">
+                        <div class="preview-glass-card tilt-card" id="bespoke-card">
+                            <div class="vessel-glow-bg" id="preview-glow"></div>
+                            <div class="preview-flame-wrapper">
+                                <div class="flame-core"></div>
+                            </div>
+                            <img src="assets/images/miora_amber.jpg" alt="ظرف اختصاصی" id="bespoke-preview-img" class="bespoke-preview-image">
+                            
+                            <div class="bespoke-summary">
+                                <span class="bespoke-badge" id="bespoke-vessel-badge">کریستال کهربایی</span>
+                                <h3 id="bespoke-display-name">شمع اختصاصی میورا شماره ۱</h3>
+                                
+                                <div class="pyramid-display">
+                                    <div class="pyr-row"><span class="pyr-label" id="pyr-lbl-top">آغازی:</span><span class="pyr-val" id="pyr-top">ترنج کالابریا</span></div>
+                                    <div class="pyr-row"><span class="pyr-label" id="pyr-lbl-heart">میانی:</span><span class="pyr-val" id="pyr-heart">رز دمشقی دودی</span></div>
+                                    <div class="pyr-row"><span class="pyr-label" id="pyr-lbl-base">پایانی:</span><span class="pyr-val" id="pyr-base">چوب عود دودی</span></div>
+                                </div>
+
+                                <div class="bespoke-footer">
+                                    <div class="bespoke-price" id="bespoke-price-val">۳,۲۰۰,۰۰۰ تومان</div>
+                                    <button class="btn btn-primary motion-btn" id="add-bespoke-btn">
+                                        <i data-feather="shopping-bag"></i> <span id="btn-add-custom">افزودن به سبد خرید</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ethos & Craftsmanship -->
+        <section id="craftsmanship" class="craft-section">
+            <div class="section-header motion-reveal">
+                <span class="section-tag" id="ethos-tag">اصالت ساخت</span>
+                <h2 class="section-title" id="ethos-title">هنر شیشه‌گری و انیمیشن موشن</h2>
+            </div>
+
+            <div class="craft-grid">
+                <div class="craft-card glass-card motion-reveal">
+                    <div class="craft-icon"><i data-feather="sun"></i></div>
+                    <h3 id="craft-1-h">کریستال دست‌ساز</h3>
+                    <p id="craft-1-p">هر ظرف شیشه‌ای توسط استادکاران برجسته شیشه‌گری با مقاومت حرارتی بالا ساخته می‌شود.</p>
+                </div>
+                <div class="craft-card glass-card motion-reveal">
+                    <div class="craft-icon"><i data-feather="feather"></i></div>
+                    <h3 id="craft-2-h">موم سویا ارگانیک</h3>
+                    <p id="craft-2-p">موم ۱۰۰٪ زیست‌تخریب‌پذیر سویا و نارگیل برای ۶۰ ساعت سوختن پاک و بدون دود.</p>
+                </div>
+                <div class="craft-card glass-card motion-reveal">
+                    <div class="craft-icon"><i data-feather="droplet"></i></div>
+                    <h3 id="craft-3-h">عطرسازی گراس فرانسه</h3>
+                    <p id="craft-3-p">تقطیر شده در شهر گراس فرانسه با عصاره‌های خالص گیاهی و صمغ‌های طبیعی.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews -->
+        <section id="reviews" class="reviews-section">
+            <div class="section-header motion-reveal">
+                <span class="section-tag" id="rev-tag">نظرات مشتریان</span>
+                <h2 class="section-title" id="rev-title">محبوب علاقمندان رایحه</h2>
+            </div>
+
+            <div class="reviews-grid">
+                <div class="review-card glass-card motion-reveal">
+                    <div class="stars">★★★★★</div>
+                    <p class="review-text" id="rev-1-text">«میورا V4 فوق‌العاده است. انیمیشن‌های موشن و کیفیت ظروف شیشه‌ای کهربایی فضا را کاملاً دگرگون کرده است.»</p>
+                    <div class="reviewer"><span class="reviewer-name" id="rev-1-name">النا رستوا — پاریس</span><span class="verified-tag" id="rev-1-tag">✓ خریدار تایید شده</span></div>
+                </div>
+                <div class="review-card glass-card motion-reveal">
+                    <div class="stars">★★★★★</div>
+                    <p class="review-text" id="rev-2-text">«قابلیت خاموش و روشن کردن شعله با کلیک فوق‌العاده جذاب است! قیمت‌گذاری به تومان هم کار را بسیار راحت کرده.»</p>
+                    <div class="reviewer"><span class="reviewer-name" id="rev-2-name">مارکوس ونس — نیویورک</span><span class="verified-tag" id="rev-2-tag">✓ خریدار تایید شده</span></div>
+                </div>
+                <div class="review-card glass-card motion-reveal">
+                    <div class="stars">★★★★★</div>
+                    <p class="review-text" id="rev-3-text">«کارت اعتباری شیشه‌ای و درگاه پرداخت دو زبانه عالی بود. از ظرف بنفش شمع هم به عنوان لیوان استفاده کردم.»</p>
+                    <div class="reviewer"><span class="reviewer-name" id="rev-3-name">سوفیا چن — لندن</span><span class="verified-tag" id="rev-3-tag">✓ خریدار تایید شده</span></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-footer">
+        <div class="footer-container">
+            <div class="footer-col brand-col">
+                <div class="brand-text">
+                    <span class="brand-name">M I O R A</span>
+                    <span class="brand-tag" id="ftr-brand-tag">کارگاه شمع‌سازی موشن</span>
+                </div>
+                <p id="ftr-desc">خلق فضایی درخشان از طریق هنر شیشه مایع، انیمیشن‌های موشن و کیمیای عطرسازی گیاهی.</p>
+                <div class="social-links">
+                    <a href="#" class="social-btn"><i data-feather="instagram"></i></a>
+                    <a href="#" class="social-btn"><i data-feather="facebook"></i></a>
+                    <a href="#" class="social-btn"><i data-feather="twitter"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4 id="ftr-h-col">کلکسیون‌ها</h4>
+                <ul>
+                    <li><a href="#collections" id="ftr-link-amber">عنبر آسمانی</a></li>
+                    <li><a href="#collections" id="ftr-link-fig">پناهگاه گیاهی</a></li>
+                    <li><a href="#collections" id="ftr-link-oud">مخمل نیمه‌شب</a></li>
+                    <li><a href="#collections" id="ftr-link-jasmine">مروارید مهتاب</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 id="ftr-h-serv">خدمات کارگاه</h4>
+                <ul>
+                    <li><a href="#bespoke-blender" id="ftr-link-lab">آزمایشگاه موشن</a></li>
+                    <li><a href="#" id="ftr-link-refill">شارژ مجدد ظروف</a></li>
+                    <li><a href="#" id="ftr-link-corp">هدایای سازمانی</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col newsletter-col">
+                <h4 id="ftr-h-join">عضویت در خبرنامه</h4>
+                <p id="ftr-p-join">دریافت دعوتنامه به دست‌پخت‌های محدود.</p>
+                <form id="newsletter-form" class="newsletter-form">
+                    <input type="email" placeholder="ایمیل خود را وارد کنید" required class="glass-input" id="news-input">
+                    <button type="submit" class="btn btn-primary btn-icon-only">
+                        <i data-feather="arrow-left"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p id="ftr-copy">&copy; ۲۰۲۶ شمع‌سازی میورا نسخه ۴. طراحی شده با شیشه مایع، انیمیشن موشن و فونت وزیرمتن.</p>
+        </div>
+    </footer>
+
+    <!-- Product Quick View Modal -->
+    <div class="modal-overlay" id="product-modal">
+        <div class="modal-dialog">
+            <button class="modal-close" id="modal-close" title="بستن"><i data-feather="x"></i></button>
+            <div class="modal-card glass-card">
+                <div class="modal-body" id="modal-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Drawer -->
+    <div class="cart-drawer-overlay" id="cart-overlay"></div>
+    <aside class="cart-drawer glass-card" id="cart-drawer">
+        <div class="cart-header">
+            <h3><i data-feather="shopping-bag"></i> <span id="cart-drawer-title">سبد خرید شما</span></h3>
+            <button class="icon-btn" id="cart-close"><i data-feather="x"></i></button>
+        </div>
+
+        <div class="cart-shipping-bar">
+            <div class="shipping-info"><span id="shipping-text">۴,۰۰۰,۰۰۰ تومان دیگر تا ارسال رایگان سراسری</span></div>
+            <div class="progress-track"><div class="progress-fill" id="shipping-progress" style="width: 44%;"></div></div>
+        </div>
+
+        <div class="cart-items" id="cart-items-container"></div>
+
+        <div class="cart-footer">
+            <div class="cart-promo">
+                <input type="text" id="promo-input" class="glass-input" placeholder="کد تخفیف (MIORA10)">
+                <button class="btn btn-sm btn-glass" id="apply-promo-btn">اعمال</button>
+            </div>
+            
+            <div class="cart-totals">
+                <div class="total-row"><span id="lbl-subtotal">جمع کل</span><span id="cart-subtotal">۰ تومان</span></div>
+                <div class="total-row discount-row" id="discount-row" style="display: none;"><span id="lbl-discount">تخفیف (۱۰٪)</span><span id="cart-discount">۰- تومان</span></div>
+                <div class="total-row grand-total"><span id="lbl-total">مبلغ قابل پرداخت</span><span id="cart-total">۰ تومان</span></div>
+            </div>
+
+            <button class="btn btn-primary btn-block motion-btn" id="checkout-btn">
+                <span id="btn-proceed-checkout">ادامه به درگاه پرداخت شیشه‌ای</span>
+                <i data-feather="lock"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Multi-Step Checkout Modal -->
+    <div class="modal-overlay" id="checkout-modal">
+        <div class="modal-dialog">
+            <button class="modal-close" id="checkout-close" title="بستن"><i data-feather="x"></i></button>
+            <div class="modal-card glass-card checkout-card">
+
+            <div class="checkout-stepper">
+                <div class="step-item active" id="step-tab-1"><span class="step-num">۱</span><span class="step-title" id="chk-step-1">ارسال</span></div>
+                <div class="step-divider"></div>
+                <div class="step-item" id="step-tab-2"><span class="step-num">۲</span><span class="step-title" id="chk-step-2">کارت شیشه‌ای</span></div>
+                <div class="step-divider"></div>
+                <div class="step-item" id="step-tab-3"><span class="step-num">۳</span><span class="step-title" id="chk-step-3">تایید نهایی</span></div>
+            </div>
+
+            <form id="checkout-form" class="checkout-form">
+                <!-- STEP 1 -->
+                <div class="checkout-step-panel active" id="step-panel-1">
+                    <div class="step-header">
+                        <h3 id="chk-hdr-1">۱. آدرس تحویل و بسته بندی فاخر</h3>
+                        <p id="chk-sub-1">ارسال به سراسر ایران و جهان در جعبه‌های شیشه‌ای محافظ</p>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="form-row">
+                            <div class="form-group"><label class="field-label" id="lbl-fn">نام</label><input type="text" placeholder="النا" required class="glass-input" id="ship-fname"></div>
+                            <div class="form-group"><label class="field-label" id="lbl-ln">نام خانوادگی</label><input type="text" placeholder="رستوا" required class="glass-input" id="ship-lname"></div>
+                        </div>
+                        <div class="form-group"><label class="field-label" id="lbl-em">ایمیل</label><input type="email" placeholder="elena@miora.ir" required class="glass-input" id="ship-email"></div>
+                        <div class="form-group"><label class="field-label" id="lbl-ad">آدرس دقیق پستی</label><input type="text" placeholder="تهران، خیابان فرشته، پلاک ۱۰۰" required class="glass-input" id="ship-address"></div>
+                        <div class="form-row">
+                            <div class="form-group"><label class="field-label" id="lbl-ct">شهر</label><input type="text" placeholder="تهران" required class="glass-input" id="ship-city"></div>
+                            <div class="form-group"><label class="field-label" id="lbl-cn">کشور</label>
+                                <select class="glass-select" id="ship-country">
+                                    <option value="IR" selected>ایران (Iran)</option>
+                                    <option value="FR">فرانسه (France)</option>
+                                    <option value="US">ایالات متحده (United States)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="delivery-options">
+                        <label class="field-label" id="lbl-del-exp">انتخاب نوع ارسال</label>
+                        <div class="delivery-grid">
+                            <label class="delivery-card">
+                                <input type="radio" name="delivery-method" value="standard" checked>
+                                <div class="delivery-card-content">
+                                    <div class="del-header"><span class="del-name"><i data-feather="truck"></i> پست پیشتاز اختصاصی</span><span class="del-price" id="del-std-price">رایگان</span></div>
+                                    <span class="del-desc">۳ تا ۴ روز کاری • بسته بندی ایمن</span>
+                                </div>
+                            </label>
+                            <label class="delivery-card">
+                                <input type="radio" name="delivery-method" value="express">
+                                <div class="delivery-card-content">
+                                    <div class="del-header"><span class="del-name"><i data-feather="zap"></i> پیک ویژه شعله</span><span class="del-price" id="del-exp-price">۱۵۰,۰۰۰ تومان</span></div>
+                                    <span class="del-desc">۲۴ ساعته • جعبه مخمل اختصاصی</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="gift-section">
+                        <label class="field-label" id="lbl-free-smpl">🎁 اشانتیون موم عطر (رایگان)</label>
+                        <div class="sample-options">
+                            <label class="sample-pill"><input type="radio" name="free-sample" value="Luna Amber" checked><span>لونا عنبر و عود</span></label>
+                            <label class="sample-pill"><input type="radio" name="free-sample" value="Emerald Fig"><span>انجیر زمردین</span></label>
+                            <label class="sample-pill"><input type="radio" name="free-sample" value="Moonlight Jasmine"><span>یاس مروارید</span></label>
+                        </div>
+                    </div>
+
+                    <div class="step-actions">
+                        <div></div>
+                        <button type="button" class="btn btn-primary motion-btn" id="goto-step-2">
+                            <span id="btn-cont-pay">ادامه به پرداخت</span><i data-feather="arrow-left"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 2 -->
+                <div class="checkout-step-panel" id="step-panel-2">
+                    <div class="step-header">
+                        <h3 id="chk-hdr-2">۲. روش پرداخت و کارت شیشه‌ای</h3>
+                    </div>
+
+                    <div class="payment-method-selector">
+                        <button type="button" class="pay-method-btn active" data-method="gateway" id="pay-btn-gateway">
+                            <i data-feather="globe"></i> <span id="lbl-pay-gateway">درگاه پرداخت آنلاین</span>
+                        </button>
+                        <button type="button" class="pay-method-btn" data-method="c2c" id="pay-btn-c2c">
+                            <i data-feather="credit-card"></i> <span id="lbl-pay-c2c">کارت به کارت</span>
+                        </button>
+                    </div>
+
+                    <!-- Online Gateway Info Mode -->
+                    <div class="pay-mode-panel active" id="pay-mode-gateway">
+                        <div class="gateway-info-box glass-card">
+                            <div class="gateway-icon-halo"><i data-feather="shield-check"></i></div>
+                            <h4 id="gtw-title">پرداخت امن مستقیم شاپرک</h4>
+                            <p id="gtw-desc">پس از تایید نهایی سفارش، به درگاه رسمی بانک منتقل خواهید شد. نیازی به ورود اطلاعات کارت در این مرحله نیست.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card to Card Transfer Mode -->
+                    <div class="pay-mode-panel" id="pay-mode-c2c">
+                        <div class="c2c-wrapper">
+                            <!-- Site Owner Glass Card (Blu Bank Saman Theme) -->
+                            <div class="live-glass-credit-card owner-card blu-card">
+                                <div class="card-chip"></div>
+                                <div class="card-brand-logo blu-logo">blu <span class="blu-bank-sub">SAMAN BANK</span></div>
+                                <div class="card-number-display single-line-card-num" id="owner-card-num">6219 • 8610 • 1234 • 5678</div>
+                                <div class="card-bottom-row">
+                                    <div class="card-holder-display">
+                                        <span class="card-label-tiny">صاحب حساب (بلوبانک سامان)</span>
+                                        <span id="owner-card-name">کارگاه شمع‌سازی میورا</span>
+                                    </div>
+                                    <button type="button" class="copy-card-btn blu-copy-btn" id="copy-owner-card" title="کپی شماره کارت">
+                                        <i data-feather="copy"></i> <span id="copy-card-txt">کپی شماره کارت</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Big Mandatory Receipt Alert Notice -->
+                            <div class="c2c-alert-notice glass-card">
+                                <div class="alert-icon-box"><i data-feather="alert-triangle"></i></div>
+                                <div class="alert-content-box">
+                                    <h4 id="alert-receipt-hdr">⚠️ ارسال فیش واریز «الزامی» است!</h4>
+                                    <p id="alert-receipt-desc">مشتری گرامی، جهت تایید و شروع ریخته‌گری شمع، حتماً تصویر فیش واریزی خود را بارگذاری کنید یا به تلگرام پشتیبانی ارسال نمایید. در غیر این صورت سفارش شما قابل پیگیری و ارسال نخواهد بود.</p>
+                                </div>
+                            </div>
+
+                            <div class="c2c-instructions">
+                                <div class="c2c-actions-grid">
+                                    <!-- Receipt Photo Upload Dropzone -->
+                                    <div class="file-upload-box glass-card mandatory-dropzone">
+                                        <input type="file" id="receipt-file-input" accept="image/*" style="display:none;">
+                                        <label for="receipt-file-input" class="file-upload-label">
+                                            <i data-feather="upload-cloud"></i>
+                                            <span id="receipt-file-text">بارگذاری تصویر فیش واریز (الزامی)</span>
+                                        </label>
+                                    </div>
+
+                                    <!-- Direct Telegram Support Link -->
+                                    <a href="https://t.me/MioraSupport" target="_blank" class="btn btn-glass tel-btn">
+                                        <i data-feather="send"></i>
+                                        <span id="tel-support-text">ارسال فیش در تلگرام (@MioraSupport)</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-actions">
+                        <button type="button" class="btn btn-glass" id="back-to-step-1"><i data-feather="arrow-right"></i><span id="btn-back-1">بازگشت</span></button>
+                        <button type="button" class="btn btn-primary motion-btn" id="goto-step-3"><span id="btn-rev-order">بررسی سفارش</span><i data-feather="arrow-left"></i></button>
+                    </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div class="checkout-step-panel" id="step-panel-3">
+                    <div class="step-header">
+                        <h3 id="chk-hdr-3">۳. بررسی نهایی و افروختن شمع</h3>
+                    </div>
+
+                    <div class="review-summary-card glass-card">
+                        <div class="review-row"><span>آدرس ارسال:</span><strong id="review-shipping-addr">تهران، خیابان فرشته</strong></div>
+                        <div class="review-row"><span>روش ارسال:</span><strong id="review-shipping-type">پست پیشتاز اختصاصی (رایگان)</strong></div>
+                        <div class="review-row"><span>اشانتیون رایگان:</span><strong id="review-sample-choice">موم لونا عنبر و عود</strong></div>
+                        <div class="review-row"><span>کارت بانکی:</span><strong id="review-payment-type">کارت شتاب منتهی به ۴۲۴۲</strong></div>
+                        
+                        <!-- Dynamic Added Products Preview Cards -->
+                        <div id="review-cart-preview" class="mini-cart-grid"></div>
+                    </div>
+
+                    <div class="checkout-summary-box">
+                        <div class="checkout-price-row"><span>جمع اقلام:</span><span id="review-subtotal">۰ تومان</span></div>
+                        <div class="checkout-price-row"><span>هزینه ارسال:</span><span id="review-shipping-fee">رایگان</span></div>
+                        <div class="checkout-price-row final-total-line"><span>مبلغ نهایی:</span><strong id="checkout-final-amount">۰ تومان</strong></div>
+                    </div>
+
+                    <div class="step-actions">
+                        <button type="button" class="btn btn-glass" id="back-to-step-2"><i data-feather="arrow-right"></i><span id="btn-back-2">بازگشت</span></button>
+                        <button type="submit" class="btn btn-primary btn-lg motion-btn" id="place-order-submit"><i data-feather="flame"></i><span id="btn-ignite-order">ثبت سفارش و افروختن شمع</span></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="order-success-modal">
+        <div class="modal-card glass-card success-card">
+            <div class="success-icon-halo"><div class="flame-core"></div></div>
+            <h2 id="success-hdr">فضای میورا شما افروخته شد! 🔥</h2>
+            <p class="success-sub">شماره پیگیری سفارش: <strong id="success-order-id">#MIORA-89421-VX</strong></p>
+            <div class="success-receipt-box">
+                <div class="receipt-row"><span>زمان آماده‌سازی ریخته‌گری:</span><strong>امروز، ساعت ۱۶:۰۰</strong></div>
+                <div class="receipt-row"><span>زمان تحویل پیش‌بینی شده:</span><strong id="success-del-date">۳ تا ۴ روز کاری</strong></div>
+                <div class="receipt-row"><span>مبلغ پرداخت شده:</span><strong id="success-paid-amount">۰ تومان</strong></div>
+            </div>
+            <div class="success-actions">
+                <button class="btn btn-primary motion-btn" id="close-success-btn"><span id="btn-back-atelier">بازگشت به کارگاه</span><i data-feather="check"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js"></script>
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>

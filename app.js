@@ -597,7 +597,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     requestAnimationFrame(animateParticles);
 
-    // Motion Scroll Reveals
+    // Motion Scroll Reveals (Pre-loads 180px before entering viewport on mobile)
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -605,12 +605,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 entry.target.style.transform = 'translateY(0)';
             }
         });
-    }, { threshold: 0.1 });
+    }, {
+        threshold: isMobileDevice ? 0.01 : 0.1,
+        rootMargin: isMobileDevice ? '180px 0px' : '0px'
+    });
 
     document.querySelectorAll('.motion-reveal').forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(35px)';
-        el.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        if (isMobileDevice) {
+            el.style.opacity = '1';
+            el.style.transform = 'none';
+        } else {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(35px)';
+            el.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+        }
         observer.observe(el);
     });
 
@@ -1280,7 +1288,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    window.addEventListener('scroll', updateScrollSpy);
+    window.addEventListener('scroll', updateScrollSpy, { passive: true });
     updateScrollSpy();
 
     // Nav Links Click Listener for Immediate Active Highlight

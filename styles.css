@@ -821,17 +821,31 @@ html[dir="rtl"] .card-brand-logo { right: auto; left: 1.5rem; }
     border: 1px solid rgba(0, 210, 255, 0.4) !important;
     box-shadow: 0 20px 45px rgba(0, 82, 255, 0.35), inset 0 1px 2px rgba(255, 255, 255, 0.4) !important;
     margin-bottom: 1.2rem !important;
+    height: 205px !important;
+    padding: 1.2rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    position: relative !important;
 }
 
 .blu-logo {
     color: #00d2ff !important;
-    font-size: 1.6rem !important;
+    font-size: 1.5rem !important;
     font-weight: 900 !important;
     letter-spacing: -0.04em !important;
     text-shadow: 0 0 12px rgba(0, 210, 255, 0.6) !important;
+    position: absolute !important;
+    top: 1.1rem !important;
+    left: 1.2rem !important;
 }
+html[dir="rtl"] .blu-logo {
+    left: 1.2rem !important;
+    right: auto !important;
+}
+
 .blu-bank-sub {
-    font-size: 0.6rem;
+    font-size: 0.58rem;
     font-weight: 700;
     color: #93c5fd;
     letter-spacing: 0.1em;
@@ -839,12 +853,25 @@ html[dir="rtl"] .card-brand-logo { right: auto; left: 1.5rem; }
     margin-top: -4px;
 }
 
-/* Single Line Neat Card Number */
+.blu-card .card-chip {
+    position: absolute !important;
+    top: 1.2rem !important;
+    right: 1.2rem !important;
+}
+html[dir="rtl"] .blu-card .card-chip {
+    right: 1.2rem !important;
+    left: auto !important;
+}
+
+/* Single Line Neat Card Number - Zero Overlap */
 .card-number-display.single-line-card-num {
     white-space: nowrap !important;
-    font-size: 1.08rem !important;
+    font-size: 1.02rem !important;
     letter-spacing: 0.08em !important;
-    margin: 1.2rem 0 !important;
+    margin-top: 3.4rem !important;
+    margin-bottom: 0.8rem !important;
+    width: 100% !important;
+    text-align: center !important;
     color: #ffffff !important;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
@@ -950,7 +977,14 @@ html[dir="rtl"] .success-receipt-box { text-align: right; }
 .receipt-row:last-child { margin-bottom: 0; }
 .receipt-row strong { color: var(--text-primary); }
 
-/* Mobile Floating Glass Navigation Dock (Icon Bar) */
+.mobile-bottom-dock.hide-dock,
+body:has(.modal-overlay.active) .mobile-bottom-dock {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+}
+
 .mobile-bottom-dock {
     display: none;
     position: fixed;
@@ -1143,7 +1177,7 @@ html[dir="rtl"] .toast-container { right: auto; left: 2rem; }
     .modal-overlay { padding: 0.5rem; }
     .modal-card { padding: 1.5rem 1rem; max-height: 92vh; }
     .form-row, .delivery-grid, .payment-method-selector, .c2c-actions-grid { grid-template-columns: 1fr; }
-    .live-glass-credit-card { max-width: 100%; height: 180px; padding: 1.2rem; }
+    .live-glass-credit-card { max-width: 100%; height: 200px !important; padding: 1.1rem !important; }
     .step-title { display: none; }
     .step-item { gap: 0; }
 }
@@ -1157,7 +1191,7 @@ html[dir="rtl"] .toast-container { right: auto; left: 2rem; }
     .flame-glow-halo { width: 50px; height: 50px; }
     .card-caption-header { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
     .quick-view-btn { opacity: 1; transform: translateY(0); }
-    .card-number-display.single-line-card-num { font-size: 0.88rem !important; letter-spacing: 0.04em !important; }
+    .card-number-display.single-line-card-num { font-size: 0.82rem !important; letter-spacing: 0.05em !important; margin-top: 3.2rem !important; margin-bottom: 0.6rem !important; text-align: center !important; }
     .modal-close { top: -14px; left: -10px; width: 38px; height: 38px; }
     html[dir="rtl"] .modal-close { left: auto; right: -10px; }
 }

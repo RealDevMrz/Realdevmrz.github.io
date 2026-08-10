@@ -1000,6 +1000,20 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.modal-add-btn').addEventListener('click', () => { addToCart(p.id); productModal.classList.remove('active'); });
     }
 
+    function updateModalDockState() {
+        const isModalActive = document.querySelector('.modal-overlay.active') !== null;
+        const dock = document.getElementById('mobile-dock');
+        if (dock) {
+            if (isModalActive) dock.classList.add('hide-dock');
+            else dock.classList.remove('hide-dock');
+        }
+    }
+
+    const modalObserver = new MutationObserver(updateModalDockState);
+    document.querySelectorAll('.modal-overlay').forEach(m => {
+        modalObserver.observe(m, { attributes: true, attributeFilter: ['class'] });
+    });
+
     document.getElementById('modal-close').addEventListener('click', () => productModal.classList.remove('active'));
 
     // Checkout Modal

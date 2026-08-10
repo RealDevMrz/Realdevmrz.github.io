@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
             langText: "EN / English",
             tag: "کارگاه شمع‌سازی موشن",
             navHome: "خانه", navCollections: "کلکسیون‌ها", navLab: "آزمایشگاه موشن", navEthos: "اصالت ساخت", navReviews: "نظرات",
+            lblDockHome: "خانه", lblDockCol: "کلکسیون‌ها", lblDockLab: "آزمایشگاه", lblDockEthos: "اصالت", lblDockRev: "نظرات",
             badge: "نسخه ۴ — انیمیشن‌های موشن و فیزیک شیشه مایع",
             heroTitle: 'شکل‌گرفته در <span class="gradient-text">شیشه مایع.</span><br>ریخته‌شده در <span class="flame-text">شعله آتش.</span>',
             heroSub: "میورا V4 ترکیبی از انیمیشن‌های موشن، ظروف شیشه‌ای کریستالی دست‌ساز و شمع‌های معطر موم طبیعی سویا با پشتیبانی از ریال و تومان.",
@@ -75,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             langText: "FA / فارسی",
             tag: "MOTION CANDLE ATELIER",
             navHome: "Home", navCollections: "Collections", navLab: "Motion Lab", navEthos: "Ethos", navReviews: "Reviews",
+            lblDockHome: "Home", lblDockCol: "Collections", lblDockLab: "Lab", lblDockEthos: "Ethos", lblDockRev: "Reviews",
             badge: "V4 — Motion Animations & Liquid Glass Physics",
             heroTitle: 'Sculpted in <span class="gradient-text">Liquid Glass.</span><br>Poured in <span class="flame-text">Eternal Flame.</span>',
             heroSub: "MIORA V4 merges motion spring dynamics, mouth-blown crystal vessels, and hand-poured botanical soy scents with Rial & Toman currency support.",
@@ -124,21 +126,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentLang = 'fa';
 
     function safeSetText(id, text) {
+        if (text === undefined || text === null) return;
         const el = document.getElementById(id);
         if (el) el.innerText = text;
     }
 
     function safeSetHtml(id, html) {
+        if (html === undefined || html === null) return;
         const el = document.getElementById(id);
         if (el) el.innerHTML = html;
     }
 
     function safeSetPlaceholder(id, placeholder) {
+        if (placeholder === undefined || placeholder === null) return;
         const el = document.getElementById(id);
         if (el) el.placeholder = placeholder;
     }
 
     function safeSetNodeValue(id, childIdx, val) {
+        if (val === undefined || val === null) return;
         const el = document.getElementById(id);
         if (el && el.childNodes && el.childNodes[childIdx]) {
             el.childNodes[childIdx].nodeValue = val;
@@ -158,6 +164,12 @@ document.addEventListener('DOMContentLoaded', () => {
         safeSetText('nav-lab', dict.navLab);
         safeSetText('nav-ethos', dict.navEthos);
         safeSetText('nav-reviews', dict.navReviews);
+
+        safeSetText('lbl-dock-home', dict.lblDockHome);
+        safeSetText('lbl-dock-col', dict.lblDockCol);
+        safeSetText('lbl-dock-lab', dict.lblDockLab);
+        safeSetText('lbl-dock-ethos', dict.lblDockEthos);
+        safeSetText('lbl-dock-rev', dict.lblDockRev);
         
         safeSetNodeValue('mob-home', 1, " " + dict.navHome);
         safeSetNodeValue('mob-collections', 1, " " + dict.navCollections);
@@ -179,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
         safeSetText('hero-candle-title', dict.heroCandleTitle);
         safeSetText('hero-candle-price', formatPrice(48, lang));
         safeSetText('hero-candle-desc', dict.heroCandleDesc);
-        safeSetNodeValue('hero-add-btn', 2, " " + dict.heroAddBtn);
+        safeSetText('hero-add-span', dict.heroAddBtn);
 
         safeSetNodeValue('mood-bar-title', 1, " " + dict.moodTitle);
         safeSetText('mood-all', dict.moodAll);
@@ -552,25 +564,38 @@ document.addEventListener('DOMContentLoaded', () => {
             this.x += this.speedX + (mouseX - this.x) * 0.0001;
             if (this.y < -10) this.reset();
         }
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = this.color;
-            ctx.globalAlpha = this.opacity;
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = this.color;
-            ctx.fill();
-            ctx.globalAlpha = 1.0;
-        }
     }
 
-    for (let i = 0; i < 45; i++) particles.push(new FlameParticle());
-    function animateParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => { p.update(); p.draw(); });
+    const isMobileDevice = window.innerWidth <= 768;
+    const particleCount = isMobileDevice ? 15 : 40;
+
+    for (let i = 0; i < particleCount; i++) particles.push(new FlameParticle());
+
+    let lastFrameTime = 0;
+    const frameInterval = isMobileDevice ? 1000 / 30 : 1000 / 60; // 30 FPS on mobile, 60 FPS on desktop
+
+    function animateParticles(currentTime) {
         requestAnimationFrame(animateParticles);
+
+        if (currentTime - lastFrameTime < frameInterval) return;
+        lastFrameTime = currentTime;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.update();
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.opacity;
+            if (!isMobileDevice) {
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = p.color;
+            }
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
+        });
     }
-    animateParticles();
+    requestAnimationFrame(animateParticles);
 
     // Motion Scroll Reveals
     const observer = new IntersectionObserver((entries) => {
@@ -617,7 +642,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.innerHTML = `
                 <div class="product-image-box">
                     <span class="scent-badge">${scentTag}</span>
-                    <img src="${p.image}" alt="${name}" class="product-img">
+                    <img src="${p.image}" alt="${name}" class="product-img" loading="lazy" decoding="async">
                     <button class="btn btn-sm btn-glass quick-view-btn" data-id="${p.id}">
                         <i data-feather="eye"></i> ${currentLang === 'fa' ? 'نمایش سریع' : 'Quick View'}
                     </button>
@@ -664,12 +689,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function attachCardEvents() {
-        document.querySelectorAll('.quick-view-btn').forEach(btn => {
+        document.querySelectorAll('#product-grid .quick-view-btn').forEach(btn => {
             btn.addEventListener('click', () => openProductModal(parseInt(btn.getAttribute('data-id'))));
         });
-        document.querySelectorAll('.add-to-cart-btn, .add-to-cart-quick').forEach(btn => {
+        document.querySelectorAll('#product-grid .add-to-cart-btn').forEach(btn => {
             btn.addEventListener('click', () => addToCart(parseInt(btn.getAttribute('data-id'))));
         });
+    }
+
+    const heroAddBtn = document.getElementById('hero-add-btn');
+    if (heroAddBtn) {
+        heroAddBtn.addEventListener('click', () => addToCart(1));
     }
 
     // ==========================================
@@ -1172,7 +1202,10 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => successModal.classList.add('active'), 300);
     });
 
-    document.getElementById('close-success-btn').addEventListener('click', () => successModal.classList.remove('active'));
+    const closeSuccessBtn = document.getElementById('close-success-btn');
+    if (closeSuccessBtn) {
+        closeSuccessBtn.addEventListener('click', () => successModal.classList.remove('active'));
+    }
 
     // Mobile nav logic
     const mobileMenuBtn = document.getElementById('mobile-menu-toggle');
@@ -1180,17 +1213,37 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', () => mobileNavOverlay.classList.add('active'));
     document.getElementById('mobile-nav-close').addEventListener('click', () => mobileNavOverlay.classList.remove('active'));
 
-    // Toast
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => mobileNavOverlay.classList.remove('active'));
+    });
+
+    // Toast with instant click-to-dismiss & auto-dismiss
     function showToast(msg) {
-        const t = document.createElement('div'); t.className = 'toast';
-        t.innerHTML = `<i data-feather="sparkles" style="color:var(--flame-gold); width:18px; height:18px;"></i><span>${msg}</span>`;
+        const t = document.createElement('div');
+        t.className = 'toast';
+        t.title = currentLang === 'fa' ? 'برای بستن کلیک کنید' : 'Click to dismiss';
+        t.innerHTML = `<i data-feather="star" style="color:var(--flame-gold); width:18px; height:18px; flex-shrink:0;"></i><span style="flex:1;">${msg}</span><i data-feather="x" style="width:14px; height:14px; opacity:0.6; flex-shrink:0; margin-left:0.4rem;"></i>`;
+        
+        let isDismissed = false;
+        const autoTimer = setTimeout(() => dismiss(), 3500);
+
+        function dismiss() {
+            if (isDismissed) return;
+            isDismissed = true;
+            clearTimeout(autoTimer);
+            t.style.opacity = '0';
+            t.style.transform = 'translateY(-10px) scale(0.95)';
+            setTimeout(() => t.remove(), 250);
+        }
+
+        t.addEventListener('click', dismiss);
         document.getElementById('toast-container').appendChild(t);
         feather.replace();
-        setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 300); }, 3500);
     }
 
-    // 3D Card Tilt
+    // 3D Card Tilt (Desktop mouse devices only)
     document.addEventListener('mousemove', (e) => {
+        if (window.innerWidth <= 768) return;
         document.querySelectorAll('.tilt-card').forEach(card => {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left; const y = e.clientY - rect.top;
@@ -1204,7 +1257,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Bulletproof ScrollSpy Navigation Active Highlight on Scroll
     const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
+    const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link, .dock-item');
 
     function updateScrollSpy() {
         const scrollPosition = window.scrollY + 180;

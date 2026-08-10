@@ -11,14 +11,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Feather Icons -->
-    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Feather Icons (Local Asset) -->
+    <script src="assets/js/feather.min.js"></script>
     
-    <!-- Motion JS Engine -->
-    <script src="https://cdn.jsdelivr.net/npm/motion@10.18.0/dist/motion.js"></script>
+    <!-- Motion JS Engine (Local Asset) -->
+    <script src="assets/js/motion.js"></script>
     
+    <link rel="icon" type="image/jpeg" href="assets/images/miora_logo.jpg">
     <!-- Custom V4 Stylesheet -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=4.3">
 </head>
 <body class="theme-dark">
 
@@ -35,19 +36,7 @@
     <header class="glass-header" id="navbar">
         <div class="header-container">
             <a href="#" class="brand-logo">
-                <span class="flame-icon">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2C12 2 7 8 7 13C7 16.866 10.134 20 14 20C17.866 20 21 16.866 21 13C21 7 16 4 16 4C16 4 15 7 13 8C11 9 12 2 12 2Z" fill="url(#flameGradV4)" />
-                        <path d="M11 11C11 11 8.5 13.5 8.5 16C8.5 17.933 10.067 19.5 12 19.5C13.933 19.5 15.5 17.933 15.5 16C15.5 13.5 13.5 12.5 13.5 12.5C13.5 12.5 13 14 12 14.5C11 15 11 11 11 11Z" fill="#FFF7ED" />
-                        <defs>
-                            <linearGradient id="flameGradV4" x1="7" y1="2" x2="21" y2="20" gradientUnits="userSpaceOnUse">
-                                <stop stop-color="#F59E0B"/>
-                                <stop offset="0.5" stop-color="#EF4444"/>
-                                <stop offset="1" stop-color="#8B5CF6"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                </span>
+                <img src="assets/images/miora_logo.jpg" alt="MIORA Logo" class="brand-logo-img" width="38" height="38" style="width:38px;height:38px;max-width:38px;max-height:38px;border-radius:50%;object-fit:cover;flex-shrink:0;">
                 <div class="brand-text">
                     <span class="brand-name">M I O R A</span>
                     <span class="brand-tag" id="i18n-tag">کارگاه شمع‌سازی موشن</span>
@@ -65,8 +54,8 @@
             <div class="header-actions">
                 <!-- Language Switcher Pill -->
                 <button class="lang-switch-btn" id="lang-toggle" title="تغییر زبان / Switch Language">
-                    <span class="lang-flag">🌐</span>
-                    <span id="current-lang-text">EN / English</span>
+                    <i data-feather="globe" class="lang-icon"></i>
+                    <span id="current-lang-text" class="lang-text-label">EN / English</span>
                 </button>
 
                 <button class="icon-btn" id="audio-toggle" title="پخش صدای شومینه">
@@ -174,7 +163,7 @@
                                 <div class="flame-core" id="flame-flame"></div>
                                 <div class="smoke-particle-box" id="smoke-box"></div>
                             </div>
-                            <img src="assets/images/miora_amber_unlit.jpg" alt="میورا لونا رز" class="featured-candle-img">
+                            <img src="assets/images/miora_amber_unlit.jpg" alt="میورا لونا رز" class="featured-candle-img" decoding="async" fetchpriority="high">
                         </div>
                         <div class="card-caption">
                             <div class="card-caption-header">
@@ -183,7 +172,7 @@
                             </div>
                             <p id="hero-candle-desc">چوب عود دودی، عنبر طلایی و گل رز دمشقی (برای خاموش/روشن کردن کلیک کنید)</p>
                             <button class="btn btn-sm btn-glass add-to-cart-quick" data-id="1" id="hero-add-btn">
-                                <i data-feather="plus"></i> <span>افزودن به سبد</span>
+                                <i data-feather="plus"></i> <span id="hero-add-span">افزودن به سبد</span>
                             </button>
                         </div>
                     </div>
@@ -239,7 +228,7 @@
                     <!-- Controls -->
                     <div class="blender-controls">
                         <div class="control-group">
-                            <label class="control-label" id="lbl-vessel">۱. انتخاب جنس و رنگ ظرف شیشه‌ای</label>
+                            <span class="control-label" id="lbl-vessel">۱. انتخاب جنس و رنگ ظرف شیشه‌ای</span>
                             <div class="vessel-options">
                                 <button class="vessel-opt active" data-vessel="Amber Crystal" data-color="#F59E0B" data-img="assets/images/miora_amber.jpg">
                                     <span class="vessel-swatch amber-swatch"></span>
@@ -261,8 +250,8 @@
                         </div>
 
                         <div class="control-group">
-                            <label class="control-label" id="lbl-top">۲. انتخاب نت آغازی</label>
-                            <select id="top-note-select" class="glass-select">
+                            <label class="control-label" id="lbl-top" for="top-note-select">۲. انتخاب نت آغازی</label>
+                            <select id="top-note-select" class="glass-select" aria-label="انتخاب نت آغازی">
                                 <option value="bergamot">ترنج کالابریا و پوست مرکبات</option>
                                 <option value="fig">برگ‌های انجیر وحشی</option>
                                 <option value="pepper">فلفل صورتی و هل کوبیده</option>
@@ -271,8 +260,8 @@
                         </div>
 
                         <div class="control-group">
-                            <label class="control-label" id="lbl-heart">۳. انتخاب نت میانی</label>
-                            <select id="heart-note-select" class="glass-select">
+                            <label class="control-label" id="lbl-heart" for="heart-note-select">۳. انتخاب نت میانی</label>
+                            <select id="heart-note-select" class="glass-select" aria-label="انتخاب نت میانی">
                                 <option value="rose" selected>رز دمشقی دودی</option>
                                 <option value="eucalyptus">اکالیپتوس و کاج آلپ</option>
                                 <option value="vanilla">انیسون ستاره‌ای و وانیل</option>
@@ -281,8 +270,8 @@
                         </div>
 
                         <div class="control-group">
-                            <label class="control-label" id="lbl-base">۴. انتخاب نت پایانی</label>
-                            <select id="base-note-select" class="glass-select">
+                            <label class="control-label" id="lbl-base" for="base-note-select">۴. انتخاب نت پایانی</label>
+                            <select id="base-note-select" class="glass-select" aria-label="انتخاب نت پایانی">
                                 <option value="oud" selected>چوب عود دودی و صندل</option>
                                 <option value="cedar">چوب سدر نمدار و خزه بلوط</option>
                                 <option value="tonka">دانه تونکا خالص و مشک گرم</option>
@@ -291,8 +280,8 @@
                         </div>
 
                         <div class="control-group">
-                            <label class="control-label" id="lbl-name">۵. نامگذاری شمع اختصاصی</label>
-                            <input type="text" id="custom-candle-name" class="glass-input" value="شمع اختصاصی میورا شماره ۱" maxlength="32">
+                            <label class="control-label" id="lbl-name" for="custom-candle-name">۵. نامگذاری شمع اختصاصی</label>
+                            <input type="text" id="custom-candle-name" class="glass-input" value="شمع اختصاصی میورا شماره ۱" maxlength="32" aria-label="نامگذاری شمع اختصاصی">
                         </div>
                     </div>
 
@@ -420,8 +409,8 @@
                 <h4 id="ftr-h-join">عضویت در خبرنامه</h4>
                 <p id="ftr-p-join">دریافت دعوتنامه به دست‌پخت‌های محدود.</p>
                 <form id="newsletter-form" class="newsletter-form">
-                    <input type="email" placeholder="ایمیل خود را وارد کنید" required class="glass-input" id="news-input">
-                    <button type="submit" class="btn btn-primary btn-icon-only">
+                    <input type="email" placeholder="ایمیل خود را وارد کنید" required class="glass-input" id="news-input" aria-label="عضویت در خبرنامه">
+                    <button type="submit" class="btn btn-primary btn-icon-only" aria-label="ارسال ایمیل خبرنامه">
                         <i data-feather="arrow-left"></i>
                     </button>
                 </form>
@@ -436,7 +425,7 @@
     <!-- Product Quick View Modal -->
     <div class="modal-overlay" id="product-modal">
         <div class="modal-dialog">
-            <button class="modal-close" id="modal-close" title="بستن"><i data-feather="x"></i></button>
+            <button class="modal-close" id="modal-close" title="بستن" aria-label="بستن پنجره"><i data-feather="x"></i></button>
             <div class="modal-card glass-card">
                 <div class="modal-body" id="modal-content"></div>
             </div>
@@ -448,7 +437,7 @@
     <aside class="cart-drawer glass-card" id="cart-drawer">
         <div class="cart-header">
             <h3><i data-feather="shopping-bag"></i> <span id="cart-drawer-title">سبد خرید شما</span></h3>
-            <button class="icon-btn" id="cart-close"><i data-feather="x"></i></button>
+            <button class="icon-btn" id="cart-close" aria-label="بستن سبد خرید"><i data-feather="x"></i></button>
         </div>
 
         <div class="cart-shipping-bar">
@@ -460,7 +449,7 @@
 
         <div class="cart-footer">
             <div class="cart-promo">
-                <input type="text" id="promo-input" class="glass-input" placeholder="کد تخفیف (MIORA10)">
+                <input type="text" id="promo-input" class="glass-input" placeholder="کد تخفیف (MIORA10)" aria-label="کد تخفیف">
                 <button class="btn btn-sm btn-glass" id="apply-promo-btn">اعمال</button>
             </div>
             
@@ -501,15 +490,15 @@
 
                     <div class="form-grid">
                         <div class="form-row">
-                            <div class="form-group"><label class="field-label" id="lbl-fn">نام</label><input type="text" placeholder="النا" required class="glass-input" id="ship-fname"></div>
-                            <div class="form-group"><label class="field-label" id="lbl-ln">نام خانوادگی</label><input type="text" placeholder="رستوا" required class="glass-input" id="ship-lname"></div>
+                            <div class="form-group"><label class="field-label" id="lbl-fn" for="ship-fname">نام</label><input type="text" placeholder="النا" required class="glass-input" id="ship-fname"></div>
+                            <div class="form-group"><label class="field-label" id="lbl-ln" for="ship-lname">نام خانوادگی</label><input type="text" placeholder="رستوا" required class="glass-input" id="ship-lname"></div>
                         </div>
-                        <div class="form-group"><label class="field-label" id="lbl-em">ایمیل</label><input type="email" placeholder="elena@miora.ir" required class="glass-input" id="ship-email"></div>
-                        <div class="form-group"><label class="field-label" id="lbl-ad">آدرس دقیق پستی</label><input type="text" placeholder="تهران، خیابان فرشته، پلاک ۱۰۰" required class="glass-input" id="ship-address"></div>
+                        <div class="form-group"><label class="field-label" id="lbl-em" for="ship-email">ایمیل</label><input type="email" placeholder="elena@miora.ir" required class="glass-input" id="ship-email"></div>
+                        <div class="form-group"><label class="field-label" id="lbl-ad" for="ship-address">آدرس دقیق پستی</label><input type="text" placeholder="تهران، خیابان فرشته، پلاک ۱۰۰" required class="glass-input" id="ship-address"></div>
                         <div class="form-row">
-                            <div class="form-group"><label class="field-label" id="lbl-ct">شهر</label><input type="text" placeholder="تهران" required class="glass-input" id="ship-city"></div>
-                            <div class="form-group"><label class="field-label" id="lbl-cn">کشور</label>
-                                <select class="glass-select" id="ship-country">
+                            <div class="form-group"><label class="field-label" id="lbl-ct" for="ship-city">شهر</label><input type="text" placeholder="تهران" required class="glass-input" id="ship-city"></div>
+                            <div class="form-group"><label class="field-label" id="lbl-cn" for="ship-country">کشور</label>
+                                <select class="glass-select" id="ship-country" aria-label="کشور">
                                     <option value="IR" selected>ایران (Iran)</option>
                                     <option value="FR">فرانسه (France)</option>
                                     <option value="US">ایالات متحده (United States)</option>
@@ -519,17 +508,17 @@
                     </div>
 
                     <div class="delivery-options">
-                        <label class="field-label" id="lbl-del-exp">انتخاب نوع ارسال</label>
+                        <span class="field-label" id="lbl-del-exp">انتخاب نوع ارسال</span>
                         <div class="delivery-grid">
-                            <label class="delivery-card">
-                                <input type="radio" name="delivery-method" value="standard" checked>
+                            <label class="delivery-card" for="del-std-input">
+                                <input type="radio" id="del-std-input" name="delivery-method" value="standard" checked aria-label="پست پیشتاز اختصاصی">
                                 <div class="delivery-card-content">
                                     <div class="del-header"><span class="del-name"><i data-feather="truck"></i> پست پیشتاز اختصاصی</span><span class="del-price" id="del-std-price">رایگان</span></div>
                                     <span class="del-desc">۳ تا ۴ روز کاری • بسته بندی ایمن</span>
                                 </div>
                             </label>
-                            <label class="delivery-card">
-                                <input type="radio" name="delivery-method" value="express">
+                            <label class="delivery-card" for="del-exp-input">
+                                <input type="radio" id="del-exp-input" name="delivery-method" value="express" aria-label="پیک ویژه شعله">
                                 <div class="delivery-card-content">
                                     <div class="del-header"><span class="del-name"><i data-feather="zap"></i> پیک ویژه شعله</span><span class="del-price" id="del-exp-price">۱۵۰,۰۰۰ تومان</span></div>
                                     <span class="del-desc">۲۴ ساعته • جعبه مخمل اختصاصی</span>
@@ -539,11 +528,11 @@
                     </div>
 
                     <div class="gift-section">
-                        <label class="field-label" id="lbl-free-smpl">🎁 اشانتیون موم عطر (رایگان)</label>
+                        <span class="field-label" id="lbl-free-smpl">🎁 اشانتیون موم عطر (رایگان)</span>
                         <div class="sample-options">
-                            <label class="sample-pill"><input type="radio" name="free-sample" value="Luna Amber" checked><span>لونا عنبر و عود</span></label>
-                            <label class="sample-pill"><input type="radio" name="free-sample" value="Emerald Fig"><span>انجیر زمردین</span></label>
-                            <label class="sample-pill"><input type="radio" name="free-sample" value="Moonlight Jasmine"><span>یاس مروارید</span></label>
+                            <label class="sample-pill" for="smpl-amber-input"><input type="radio" id="smpl-amber-input" name="free-sample" value="Luna Amber" checked aria-label="اشانتیون لونا عنبر و عود"><span>لونا عنبر و عود</span></label>
+                            <label class="sample-pill" for="smpl-fig-input"><input type="radio" id="smpl-fig-input" name="free-sample" value="Emerald Fig" aria-label="اشانتیون انجیر زمردین"><span>انجیر زمردین</span></label>
+                            <label class="sample-pill" for="smpl-jasmine-input"><input type="radio" id="smpl-jasmine-input" name="free-sample" value="Moonlight Jasmine" aria-label="اشانتیون یاس مروارید"><span>یاس مروارید</span></label>
                         </div>
                     </div>
 
@@ -573,7 +562,7 @@
                     <!-- Online Gateway Info Mode -->
                     <div class="pay-mode-panel active" id="pay-mode-gateway">
                         <div class="gateway-info-box glass-card">
-                            <div class="gateway-icon-halo"><i data-feather="shield-check"></i></div>
+                            <div class="gateway-icon-halo"><i data-feather="shield"></i></div>
                             <h4 id="gtw-title">پرداخت امن مستقیم شاپرک</h4>
                             <p id="gtw-desc">پس از تایید نهایی سفارش، به درگاه رسمی بانک منتقل خواهید شد. نیازی به ورود اطلاعات کارت در این مرحله نیست.</p>
                         </div>
@@ -611,7 +600,7 @@
                                 <div class="c2c-actions-grid">
                                     <!-- Receipt Photo Upload Dropzone -->
                                     <div class="file-upload-box glass-card mandatory-dropzone">
-                                        <input type="file" id="receipt-file-input" accept="image/*" style="display:none;">
+                                        <input type="file" id="receipt-file-input" accept="image/*" style="display:none;" aria-label="بارگذاری تصویر فیش واریز (الزامی)">
                                         <label for="receipt-file-input" class="file-upload-label">
                                             <i data-feather="upload-cloud"></i>
                                             <span id="receipt-file-text">بارگذاری تصویر فیش واریز (الزامی)</span>
@@ -658,7 +647,7 @@
 
                     <div class="step-actions">
                         <button type="button" class="btn btn-glass" id="back-to-step-2"><i data-feather="arrow-right"></i><span id="btn-back-2">بازگشت</span></button>
-                        <button type="submit" class="btn btn-primary btn-lg motion-btn" id="place-order-submit"><i data-feather="flame"></i><span id="btn-ignite-order">ثبت سفارش و افروختن شمع</span></button>
+                        <button type="submit" class="btn btn-primary btn-lg motion-btn" id="place-order-submit"><i data-feather="zap"></i><span id="btn-ignite-order">ثبت سفارش و افروختن شمع</span></button>
                     </div>
                 </div>
             </form>
@@ -678,14 +667,41 @@
                 <div class="receipt-row"><span>مبلغ پرداخت شده:</span><strong id="success-paid-amount">۰ تومان</strong></div>
             </div>
             <div class="success-actions">
-                <button class="btn btn-primary motion-btn" id="close-success-btn"><span id="btn-back-atelier">بازگشت به کارگاه</span><i data-feather="check"></i></button>
+                <button class="btn btn-primary motion-btn" id="close-success-btn">
+                    <span id="btn-back-atelier">بازگشت به کارگاه</span>
+                    <i data-feather="check"></i>
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- Mobile Floating Glass Navigation Dock (Icon Bar) -->
+    <nav class="mobile-bottom-dock glass-card" id="mobile-dock">
+        <a href="#hero" class="dock-item active" id="dock-home" title="خانه">
+            <i data-feather="home"></i>
+            <span class="dock-label" id="lbl-dock-home">خانه</span>
+        </a>
+        <a href="#collections" class="dock-item" id="dock-collections" title="کلکسیون‌ها">
+            <i data-feather="grid"></i>
+            <span class="dock-label" id="lbl-dock-col">کلکسیون‌ها</span>
+        </a>
+        <a href="#bespoke-blender" class="dock-item" id="dock-lab" title="آزمایشگاه موشن">
+            <i data-feather="sliders"></i>
+            <span class="dock-label" id="lbl-dock-lab">آزمایشگاه</span>
+        </a>
+        <a href="#craftsmanship" class="dock-item" id="dock-ethos" title="اصالت ساخت">
+            <i data-feather="award"></i>
+            <span class="dock-label" id="lbl-dock-ethos">اصالت</span>
+        </a>
+        <a href="#reviews" class="dock-item" id="dock-reviews" title="نظرات">
+            <i data-feather="star"></i>
+            <span class="dock-label" id="lbl-dock-rev">نظرات</span>
+        </a>
+    </nav>
+
     <div class="toast-container" id="toast-container"></div>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=4.3"></script>
     <script>
         feather.replace();
     </script>
